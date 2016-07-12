@@ -4,8 +4,14 @@ PRT_NAME="PrintDis";
 
 for fileToP in "${ABS_PATH}"/queue/*;
 do
-  lpr -P "${PRT_NAME}" "${fileToP}";
-  sleep 4;
+  if [ ${fileToP##*.} != "fmt" ]; then
+    fold -s ${fileToP} > "${fileToP}.fmt";
+    rm ${fileToP};
+    lpr -P "${PRT_NAME}" "${fileToP}.fmt";
+  else
+    lpr -P "${PRT_NAME}" "${fileToP}";
+  fi
+  sleep 1;
 done
 
 mv "${ABS_PATH}"/queue/* "${ABS_PATH}"/printed/;
