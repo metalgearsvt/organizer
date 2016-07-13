@@ -2,6 +2,8 @@
 ABS_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd);
 PRT_NAME="PrintDis";
 
+./comp.sh &> /dev/null;
+
 for fileToP in "${ABS_PATH}"/queue/*;
 do
   if [ ${fileToP##*.} != "fmt" ]; then
