@@ -1,4 +1,24 @@
 #!/usr/bin/python3
 import fileUtils.printToFile as PF
+import constants.constants as C
+import util.prompt as PR
 
-PF.ptf()
+p = PF.ptf()
+
+cmdin = ""
+
+while cmdin != "e":
+	print("\n\n1.) Log JIRA References\n2.) Log detail of work\n3.) Add msc info\ne.) Exit\n")
+	cmdin = input("Select option: ")
+	category = ""
+	if cmdin == "e":
+		break
+	if cmdin == "1":
+		category = C.JIRA
+		entry = PR.jira()
+	elif cmdin == "2":
+		category = C.NOTI
+		entry = PR.detail_work()
+	elif cmdin == "3":
+		category = C.MSC
+	p.writeOut(entry, category)
