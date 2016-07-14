@@ -1,0 +1,62 @@
+#!/bin/bash
+ABS_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd);
+USR=$( whoami );
+
+if which lpr > /dev/null; then
+	echo "lpr dependency is already installed, skipping...";
+	echo "";
+	echo "===============";
+	echo "Printer set up:";
+	echo "If your option is not listed, you need to install it with CUPS.";
+	PRT=$( lpstat -a | awk '{print $1}' );
+	CT=1;
+	for i in $PRT;
+	do
+		printf "\t${CT}.) ${i}\n";
+		CT=${CT}+1;
+	done
+	printf "\n\tSelect an option: ";
+	declare -i OPTI;
+	read OPTI;
+	echo ${PRT[$OPTI - 1]} > "${ABS_PATH%/*}/output/toPrint/printer.cfg";
+else
+	echo "Need to install lpr dependency!";
+fi
+
+printf "Your name (First Last): ";
+read UN;
+echo $UN > "${ABS_PATH%/*}/output/headers/main"
+printf "Hour to print (ex: 09): ";
+read HR;
+printf "Minute to print (ex: 00): ";
+read MN;
+printf "Day of the week to run, space between vals (M T W R F) OR * for all weekdays: ";
+read WK;
+WN="";
+if [ "${WK}" != "*" ]; then
+	for i in $( echo "$WK" | sed "s/,/ /g" | tr '[:lower:]' '[:upper:]' )
+	do
+		WN=$( echo ${WN} $( echo "${i}" | sed "s/M/1/g" | sed "s/T/2/g" | sed "s/W/3/g" | sed "s/R/4/g" | sed "s/F/5/g" ) );
+	done
+else
+	WN="1-5";
+fi
+WN=$( echo "${WN}" | sed "s/ /,/g" )
+
+cd ${ABS_PATH};
+
+CMDC="${ABS_PATH%/*}/output/toPrint/commence.sh &>> ${ABS_PATH%/*}/output/toPrint/cronLog.log";
+CRE="${MN} ${HR}	* * ${WN}	${USR}	${CMDC}";
+
+crontab -l > tmpfile 2> /dev/null;
+echo "${CRE}" >> tmpfile;
+
+crontab tmpfile;
+CRNSC=$?;
+rm tmpfile;
+
+if [ ${CRNSC} == "0" ]; then
+	echo "Install complete.";
+else
+	echo "Errors during install!";
+fi

@@ -24,6 +24,7 @@ for file in "${NTI}"/*; do
 	if [ -a ${MSC}/${file##*/} ]; then
 		cat ${HDR}/msc >> ${DEST};
 		cat ${MSC}/${file##*/} >> ${DEST};
+		echo "" >> ${DEST};
 	fi
 	cat ${HDR}/others >> ${DEST};
 done

@@ -12,6 +12,12 @@ class ptf:
 		self.jira = self.root_dir + "/" +  C.jira_op + "/" + self.fileName
 		self.msc = self.root_dir + "/" + C.msc_op + "/" + self.fileName
 		self.noTicket = self.root_dir + "/" + C.no_ticket_op + "/" + self.fileName
+		with open(self.jira, "a+") as fo:
+			fo.write("")
+		with open(self.msc, "a+") as fo:
+			fo.write("")
+		with open(self.noTicket, "a+") as fo:
+			fo.write("")
 
 	def writeOut(self, content, type):
 		if type == C.JIRA:

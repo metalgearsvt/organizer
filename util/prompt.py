@@ -19,3 +19,7 @@ def detail_work():
 			formatted = formatted + "\t- " + si + "\n"
 	return formatted
 	
+def msc():
+	item = input("Add miscellaneous item: ")
+	formatted = "\n - " + item
+	return formatted

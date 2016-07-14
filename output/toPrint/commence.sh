@@ -1,8 +1,8 @@
 #!/bin/bash
 ABS_PATH=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd);
-PRT_NAME="PrintDis";
+PRT_NAME=$( cat ${ABS_PATH}/printer.cfg );
 
-./comp.sh &> /dev/null;
+${ABS_PATH}/comp.sh &> /dev/null;
 
 for fileToP in "${ABS_PATH}"/queue/*;
 do

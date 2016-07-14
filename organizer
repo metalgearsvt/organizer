@@ -21,4 +21,6 @@ while cmdin != "e":
 		entry = PR.detail_work()
 	elif cmdin == "3":
 		category = C.MSC
+		entry = PR.msc()
+
 	p.writeOut(entry, category)
